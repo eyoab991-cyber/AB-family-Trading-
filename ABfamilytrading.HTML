@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AB Family Trading | AB family spaces, Built for Trading</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#1a1a1a',
+                            orange: '#f05a1e', // Vibrant orange from reference image_5af4c6.jpg
+                            light: '#f8f9fa',
+                            gray: '#6b7280'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(0,0,0,0.05)',
+                        'floating': '0 30px 60px -15px rgba(0,0,0,0.1), 0 20px 30px -10px rgba(240, 90, 30, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Styles for Animations and Layouts */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Simulated Video Background Pan */
+        @keyframes slowPan {
+            0% { transform: scale(1.05) translate(0, 0); }
+            50% { transform: scale(1.1) translate(-1%, -1%); }
+            100% { transform: scale(1.05) translate(0, 0); }
+        }
+        .bg-animate {
+            animation: slowPan 30s ease-in-out infinite;
+        }
+
+        /* 3D Tilt Effect Container */
+        .tilt-container {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        .tilt-element {
+            transform: translateZ(30px);
+        }
+
+        /* Fade Up Animation */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom shape from image_5af4e4.png */
+        .arch-image {
+            border-radius: 200px 200px 20px 20px;
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .arch-image {
+                border-radius: 400px 400px 30px 30px;
+            }
+        }
+
+        /* Slider snap points */
+        .slider-container {
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+        .slider-item {
+            scroll-snap-align: start;
+        }
+    </style>
+</head>
+<body class="bg-brand-light text-brand-dark antialiased overflow-x-hidden">
+
+    <header class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition duration-300 shadow-lg shadow-brand-orange/30">
+                    <i class="fa-solid fa-building text-white text-sm"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight text-white transition-colors duration-300" id="nav-logo-text">AB Family</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex space-x-8 items-center bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 text-white" id="nav-links">
+                <a href="#" class="text-sm font-medium hover:text-brand-orange transition">About</a>
+                <a href="#" class="text-sm font-medium hover:text-brand-orange transition">Services</a>
+                <a href="#contact" class="text-sm font-medium hover:text-brand-orange transition">Contact</a>
+            </nav>
+
+            <!-- CTA -->
+            <div class="hidden md:flex items-center space-x-4">
+                <button onclick="toggleAuthModal()" class="text-sm font-medium text-white hover:text-brand-orange transition" id="nav-login">Sign in</button>
+                <a href="#contact" class="bg-brand-orange text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-orange-600 transition shadow-lg shadow-brand-orange/30">Contact Us</a>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button class="md:hidden text-white text-2xl" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="relative min-h-screen flex items-center pt-20 pb-12 overflow-hidden">
+        <!-- Background (Simulating Video with CSS animation on a high-res image) -->
+        <div class="absolute inset-0 z-0 overflow-hidden bg-[#e5e0d8]">
+            <!-- Updated Hero Image -->
+            <div class="absolute inset-0 bg-[url('Screenshot 2026-07-15 142453.jpg')] bg-cover bg-center bg-animate opacity-90"></div>
+            <!-- Gradient Overlay for readability -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Content -->
+                <div class="lg:col-span-12 pt-10 lg:pt-0 max-w-4xl">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-medium mb-6">
+                        <span class="w-2 h-2 rounded-full bg-brand-orange animate-pulse"></span>
+                        Commercial & Residential Assets
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-bold text-white leading-[1.1] mb-6 drop-shadow-lg">
+                        AB family spaces,<br>
+                        <span class="font-serif italic font-normal text-brand-orange">Built for Trading.</span>
+                    </h1>
+                    
+                    <p class="text-gray-200 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
+                        Explore prime commercial locations and premium spaces managed by AB Family Trading P.L.C. Empowering your business and lifestyle.
+                    </p>
+
+                    <!-- Floating User Stat (Reference: image_5af4c6.jpg) -->
+                    <div class="inline-flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 p-3 pr-6 rounded-full shadow-xl">
+                        <div class="flex -space-x-3">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" class="w-10 h-10 rounded-full border-2 border-white object-cover" alt="User">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" class="w-10 h-10 rounded-full border-2 border-white object-cover" alt="User">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" class="w-10 h-10 rounded-full border-2 border-white object-cover" alt="User">
+                        </div>
+                        <div class="text-white">
+                            <p class="font-bold text-lg leading-none">1,200+</p>
+                            <p class="text-xs text-gray-300">Happy Tenants</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-brand-dark py-8 relative z-20 -mt-2">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                <div class="flex items-center justify-center gap-8 md:gap-16 w-full">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-white mb-1">50+</div>
+                        <div class="text-gray-400 text-sm uppercase tracking-wider">Properties Managed</div>
+                    </div>
+                    <div class="w-px h-12 bg-white/20"></div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-white mb-1">100%</div>
+                        <div class="text-gray-400 text-sm uppercase tracking-wider">Tenant Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-24 bg-white overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Left: Arched Image (Updated with Building Photo) -->
+                <div class="relative fade-up tilt-container order-2 lg:order-1">
+                    <div class="absolute -inset-4 bg-orange-50 rounded-[400px_400px_30px_30px] transform -rotate-3 -z-10 tilt-element"></div>
+                    <div class="arch-image relative shadow-2xl tilt-element">
+                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1935&auto=format&fit=crop" alt="AB Family Property" class="w-full h-[600px] object-cover transition duration-700 hover:scale-105">
+                        
+                        <!-- Floating badge -->
+                        <div class="absolute bottom-8 -right-4 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-building-user"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Headquarters</p>
+                                <p class="font-bold text-brand-dark">Alemayo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Accordion Values -->
+                <div class="fade-up order-1 lg:order-2">
+                    <p class="text-brand-orange font-semibold tracking-wider uppercase text-sm mb-2">Our Standard</p>
+                    <h2 class="text-4xl md:text-5xl font-bold text-brand-dark mb-6 leading-tight">
+                        Value We Give To You <span class="text-brand-orange">.</span>
+                    </h2>
+                    <p class="text-gray-600 mb-10 text-lg leading-relaxed">
+                        We are always ready to help by providing the best service for you. We believe a good place to live or trade can make your life better.
+                    </p>
+
+                    <!-- Accordion List -->
+                    <div class="space-y-4">
+                        <!-- Item 1 -->
+                        <div class="border border-gray-100 rounded-2xl p-5 bg-white shadow-soft transition-all hover:border-brand-orange group cursor-pointer">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center transition group-hover:bg-brand-orange group-hover:text-white">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <h3 class="font-bold text-brand-dark text-lg">Prime Locations</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down text-gray-400 group-hover:text-brand-orange transition transform group-hover:rotate-180"></i>
+            </div>
+            <p class="mt-4 text-gray-500 text-sm leading-relaxed hidden group-hover:block transition-all">
+                All our properties are strategically located in safe, accessible, and desirable neighborhoods, ensuring you are close to essential amenities and transit.
+            </p>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</section>
+
+    <section class="py-24 bg-brand-dark relative overflow-hidden">
+        <!-- Decorative quote mark -->
+        <div class="absolute top-10 left-10 text-[200px] text-white/5 font-serif leading-none select-none z-0">"</div>
+        
+        <div class="container mx-auto px-6 relative z-10 fade-up">
+            <div class="text-center mb-12">
+                <p class="text-brand-orange font-semibold tracking-wider uppercase text-sm mb-2">Our Community Updates</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Latest from Our Facebook</h2>
+            </div>
+            
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- POST 1: Updated with your provided link -->
+                <a href="https://www.facebook.com/permalink.php?story_fbid=pfbid0xwzqio7L7U7Co1XZNmMUiEGt5YMD1LY2BNzJvwuWfseazEetzenJjEsG8fPse34el&id=61585857475692" target="_blank" class="relative rounded-3xl overflow-hidden shadow-2xl group block">
+                    <img src="PASTE_YOUR_FIRST_IMAGE_URL_HERE" alt="Community Update 1" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <i class="fa-brands fa-facebook text-white text-4xl"></i>
+                    </div>
+                </a>
+
+                <!-- POST 2 -->
+                <a href="https://www.facebook.com/permalink.php?story_fbid=pfbid0NFN81q6jBuPLSW7dkJWHbHZjAX2RFV2FH8M8Wv9ayuHnZMCDbsgUWYWFwZADActUl&id=61585857475692" target="_blank" class="relative rounded-3xl overflow-hidden shadow-2xl group block">
+                    <img src="PASTE_YOUR_SECOND_IMAGE_URL_HERE" alt="Community Update 2" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <i class="fa-brands fa-facebook text-white text-4xl"></i>
+                    </div>
+                </a>
+
+                <!-- POST 3: Replace the src below with your third Facebook image link -->
+                <a href="https://www.facebook.com/permalink.php?story_fbid=pfbid0PcYP7XeERDdbWTdvnLxts6sTiqC3bPHjs6dGzzmNp9pZdx3CDJHCciHqsasBs1UGl&id=61585857475692" target="_blank" class="relative rounded-3xl overflow-hidden shadow-2xl group block">
+                    <img src="PASTE_YOUR_THIRD_IMAGE_URL_HERE" alt="Community Update 3" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <i class="fa-brands fa-facebook text-white text-4xl"></i>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Gallery of Ceremony Photos -->
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl group">
+                    <img src="photo_2026-07-15_12-41-25_2.jpg" alt="AB Family Ceremony" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                </div>
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl group">
+                    <img src="photo_2026-07-15_12-41-18_2.jpg" alt="AB Family Event" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                </div>
+            </div>
+                
+            <div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 md:p-12 relative shadow-soft text-center mx-auto max-w-4xl z-20">
+                <p class="text-xl md:text-2xl text-gray-200 italic leading-relaxed mb-6">
+                    "More than just a trading company, we are a family committed to elevating the standard of living and commercial success in our community. Our legacy is built on strong foundations, cultural heritage, and unwavering dedication."
+                </p>
+                <div class="inline-flex items-center justify-center gap-3 pt-6 border-t border-white/20">
+                    <div class="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center">
+                        <i class="fa-solid fa-users text-white text-sm"></i>
+                    </div>
+                    <div class="text-left">
+                        <h4 class="font-bold text-white tracking-wide">AB Family Trading P.L.C.</h4>
+                        <p class="text-sm text-brand-orange">Founders & Leadership Team</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Headquarters Section -->
+    <section class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-up">
+                    <p class="text-brand-orange font-semibold tracking-wider uppercase text-sm mb-2">Our Presence</p>
+                    <h2 class="text-4xl md:text-5xl font-bold text-brand-dark mb-6">Visit Our Headquarters</h2>
+                    <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                        Located centrally, our offices serve as the hub for our operations. We invite partners, tenants, and clients to visit us at our main branch.
+                    </p>
+                    <div class="flex items-center gap-4 text-brand-dark">
+                        <div class="w-12 h-12 rounded-full bg-brand-orange/10 text-brand-orange flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold">Alemayo</p>
+                            <p class="text-sm text-gray-500">Suite 23B, Addis Ababa, Ethiopia</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 fade-up">
+                    <img src="photo_2026-07-15_12-41-10_3.jpg" alt="Building Exterior" class="col-span-2 rounded-2xl shadow-xl hover:shadow-2xl transition duration-500">
+                    <img src="photo_2026-07-15_12-40-48_2.jpg" alt="Team at Office" class="rounded-2xl shadow-lg">
+                    <img src="photo_2026-07-15_12-41-04_2.jpg" alt="Team at Office Balcony" class="rounded-2xl shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full relative shadow-2xl">
+            <h2 id="modal-title" class="text-2xl font-bold text-brand-dark mb-6">Welcome Back</h2>
+            <div id="login-form" class="space-y-4">
+                <button onclick="simulateLogin()" class="w-full py-3 bg-white border border-gray-300 rounded-xl font-medium hover:bg-gray-50 flex items-center justify-center gap-2 transition">
+                    <i class="fa-brands fa-google text-red-500"></i> Continue with Google
+                </button>
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+                    <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-400">or</span></div>
+                </div>
+                <input type="email" placeholder="Email Address" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-orange outline-none">
+                <button onclick="simulateLogin()" class="w-full py-3 bg-brand-orange text-white rounded-xl font-medium hover:bg-orange-600 transition">Continue with Email</button>
+            </div>
+        </div>
+    </div>
+
+    <footer id="contact" class="bg-brand-dark text-white pt-20 pb-10 border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Brand Info -->
+                <div class="lg:col-span-1">
+                    <a href="#" class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-building text-white text-sm"></i>
+                        </div>
+                        <span class="font-bold text-xl tracking-tight">AB Family</span>
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Elevating local living standards through quality, modern construction and professional property management.
+                    </p>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6">Services</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-brand-orange transition">Commercial Spaces</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">Modern Suites</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">Retail Locations</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">Book a Viewing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6">Company</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-brand-orange transition">Our Legacy</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">Tenant Portal</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">Maintenance Request</a></li>
+                        <li><a href="#" class="hover:text-brand-orange transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact (Reference: Blueprint Page 4 details) -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6">Headquarters</h4>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot mt-1 text-brand-orange"></i>
+                            <span>Alemayo, Suite 23B<br>Addis Ababa, Ethiopia</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-brand-orange"></i>
+                            <span>09 11385601</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-brand-orange"></i>
+                            <span>alualba500@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">© 2026 AB Family Trading. All rights reserved.</p>
+                <div class="flex gap-6 text-sm text-gray-500">
+                    <a href="#" class="hover:text-white transition">Terms & Conditions</a>
+                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Navbar Scroll Effect
+            const navbar = document.getElementById('navbar');
+            const navLinks = document.getElementById('nav-links');
+            const navLogoText = document.getElementById('nav-logo-text');
+            const navLogin = document.getElementById('nav-login');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-white', 'shadow-md', 'py-2');
+                    navbar.classList.remove('py-4');
+                    // Change colors for light bg
+                    navLogoText.classList.remove('text-white');
+                    navLogoText.classList.add('text-brand-dark');
+                    
+                    navLinks.classList.remove('bg-white/10', 'border-white/20', 'text-white');
+                    navLinks.classList.add('bg-gray-100', 'border-transparent', 'text-brand-dark');
+                    
+                    navLogin.classList.remove('text-white');
+                    navLogin.classList.add('text-brand-dark');
+                } else {
+                    navbar.classList.remove('bg-white', 'shadow-md', 'py-2');
+                    navbar.classList.add('py-4');
+                    // Revert colors for dark bg
+                    navLogoText.classList.add('text-white');
+                    navLogoText.classList.remove('text-brand-dark');
+                    
+                    navLinks.classList.add('bg-white/10', 'border-white/20', 'text-white');
+                    navLinks.classList.remove('bg-gray-100', 'border-transparent', 'text-brand-dark');
+                    
+                    navLogin.classList.add('text-white');
+                    navLogin.classList.remove('text-brand-dark');
+                }
+            });
+
+            // 2. Intersection Observer for Fade-Up Animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Run once
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up').forEach((el) => {
+                observer.observe(el);
+            });
+
+            // 3. Simple 3D Tilt Effect using Vanilla JS
+            // This satisfies the "3D" requirement without heavy WebGL overhead, perfect for UI cards
+            const tiltContainers = document.querySelectorAll('.tilt-container');
+
+            tiltContainers.forEach(container => {
+                const element = container.querySelector('.tilt-element');
+                if(!element) return;
+
+                container.addEventListener('mousemove', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // x position within the element.
+                    const y = e.clientY - rect.top;  // y position within the element.
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const tiltX = ((y - centerY) / centerY) * -10; // Max tilt degree
+                    const tiltY = ((x - centerX) / centerX) * 10;
+                    
+                    element.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02, 1.02, 1.02)`;
+                    element.style.transition = "transform 0.1s ease-out";
+                });
+
+                container.addEventListener('mouseleave', () => {
+                    element.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    element.style.transition = "transform 0.5s ease-out"; // Smooth return
+                });
+            });
+
+            // 4. Accordion Logic for 'Value We Give To You'
+            const accordions = document.querySelectorAll('.group.cursor-pointer');
+            accordions.forEach(acc => {
+                acc.addEventListener('click', function() {
+                    // Simple interaction: if we click, we want to simulate opening it by managing classes
+                });
+            });
+
+            // 5. Authentication Logic
+            window.toggleAuthModal = () => {
+                const modal = document.getElementById('auth-modal');
+                modal.classList.toggle('hidden');
+                modal.classList.toggle('flex');
+            };
+
+            window.simulateLogin = () => {
+                const navLogin = document.getElementById('nav-login');
+                navLogin.textContent = "Sign out";
+                navLogin.onclick = simulateLogout;
+                toggleAuthModal();
+                alert('Welcome! You are now signed in.');
+            };
+
+            window.simulateLogout = () => {
+                const navLogin = document.getElementById('nav-login');
+                navLogin.textContent = "Sign in";
+                navLogin.onclick = toggleAuthModal;
+                alert('You have been signed out.');
+            };
+        });
+    </script>
+</body>
+</html>
